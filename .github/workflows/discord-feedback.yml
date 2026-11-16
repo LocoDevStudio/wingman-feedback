@@ -1,0 +1,58 @@
+name: Post new feedback to Discord
+
+on:
+  issues:
+    types: [opened]
+  discussion:
+    types: [created]
+
+permissions:
+  contents: read
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Post to the team feedback channel
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_FEEDBACK_WEBHOOK }}
+        shell: python
+        run: |
+          import json, os, re, urllib.request
+          NL = chr(10)
+          ev = json.load(open(os.environ["GITHUB_EVENT_PATH"], encoding="utf-8"))
+          item = ev.get("issue") or ev.get("discussion")
+          if not item or not os.environ.get("WEBHOOK"):
+              raise SystemExit("nothing to post")
+          labels = [l["name"] for l in item.get("labels") or []]
+          kinds = {"crash": "Crash", "bug": "Bug", "tool-limitation": "Tool limitation", "feature-idea": "Feature idea"}
+          if "discussion" in ev:
+              kind = "Discussion" + (", " + item["category"]["name"] if item.get("category") else "")
+          else:
+              kind = next((v for k, v in kinds.items() if k in labels), "Issue")
+
+          def clean(s, n):
+              s = (s or "").replace(chr(0x2014), ", ").replace(chr(0x2013), "-").replace("@", "@" + chr(0x200B))
+              s = " ".join(s.split())
+              return s if len(s) <= n else s[: n - 3] + "..."
+
+          fields = {}
+          for m in re.finditer("^### (.+?)[ ]*$([^#]*)", item.get("body") or "", re.M):
+              v = m.group(2).strip()
+              if v and v != "_No response_":
+                  fields[m.group(1).strip()] = v
+          want = [("Tool", "Tool"), ("Where did this happen?", "Where"), ("Where would you use it?", "Where"),
+                  ("Wingman version", "Wingman"), ("Unreal Engine version", "UE"), ("Unreal Engine version(s) you use", "UE"),
+                  ("Did the editor crash?", "Crashed")]
+          lines = [f"**{kind}:** {clean(item['title'], 200)}"]
+          for label, short in want:
+              if label in fields:
+                  lines.append(f"{short}: {clean(fields[label], 150)}")
+          lines.append(f"By {item['user']['login']} on GitHub")
+          lines.append(item["html_url"])
+          body = json.dumps({"content": NL.join(lines)[:1990], "flags": 4, "allowed_mentions": {"parse": []}}).encode()
+          req = urllib.request.Request(os.environ["WEBHOOK"], data=body, method="POST",
+                                       headers={"Content-Type": "application/json", "User-Agent": "wingman-feedback-action"})
+          urllib.request.urlopen(req, timeout=20).read()
+          print("posted", kind)
