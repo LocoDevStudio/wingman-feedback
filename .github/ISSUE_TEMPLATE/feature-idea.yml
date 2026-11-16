@@ -1,0 +1,30 @@
+name: Feature idea
+description: A new tool or workflow you'd like Wingman to have.
+title: "[Idea] <short description>"
+labels: ["feature-idea", "needs-triage"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: What do you want to do?
+      description: The result you're after in Unreal, in your own words.
+    validations:
+      required: true
+  - type: textarea
+    id: today
+    attributes:
+      label: How do you do it today?
+      description: By hand, a workaround, or not at all.
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where would you use it?
+      options:
+        - Wingman panel inside Unreal
+        - Outside AI app over MCP
+        - Both
+  - type: input
+    id: ue_version
+    attributes:
+      label: Unreal Engine version(s) you use
+      placeholder: "5.7"

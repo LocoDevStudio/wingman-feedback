@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions, tips and workarounds
+    url: https://github.com/LocoDevStudio/wingman-feedback/discussions
+    about: Ask a question or share a workaround in Discussions.
+  - name: Known issues
+    url: https://github.com/LocoDevStudio/wingman-feedback/blob/main/KNOWN-ISSUES.md
+    about: Check whether it's already known before reporting.

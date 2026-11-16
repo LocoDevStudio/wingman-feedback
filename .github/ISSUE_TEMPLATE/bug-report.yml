@@ -1,0 +1,71 @@
+name: Bug or crash
+description: Something broke, the editor crashed, or the Wingman panel misbehaved.
+title: "[Bug] <short description>"
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This repository is public: take out names, emails, keys and personal paths. Never attach project files or full logs; paste only the lines around the error.
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where did this happen?
+      options:
+        - Wingman panel inside Unreal
+        - Outside AI app over MCP (Claude Code)
+        - Outside AI app over MCP (Codex)
+        - Outside AI app over MCP (Cursor)
+        - Outside AI app over MCP (other)
+        - Installing or updating Wingman
+    validations:
+      required: true
+  - type: input
+    id: wingman_version
+    attributes:
+      label: Wingman version
+      placeholder: 0.22.6
+    validations:
+      required: true
+  - type: dropdown
+    id: ue_version
+    attributes:
+      label: Unreal Engine version
+      options: ["4.27", "5.5", "5.6", "5.7", "5.8", "5.9", "Other"]
+    validations:
+      required: true
+  - type: dropdown
+    id: crash
+    attributes:
+      label: Did the editor crash?
+      options: ["No", "Yes"]
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: What happened
+      description: The error text, or for a crash the assertion line and the few log lines before it (from Saved/Logs or Saved/Crashes).
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy
+      options:
+        - label: I took out names, emails, keys and personal paths, and attached no project files.
+          required: true

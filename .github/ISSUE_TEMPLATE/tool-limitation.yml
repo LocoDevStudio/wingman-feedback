@@ -1,0 +1,74 @@
+name: Tool limitation
+description: A Wingman tool can't do something it should, refuses a valid request, or reports success for something that didn't happen.
+title: "[Limitation] <tool>: <what it can't do>"
+labels: ["tool-limitation", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. This repository is public: take out names, emails, keys and personal paths (write `<Project>/Content/...`). Never attach project files.
+  - type: input
+    id: tool
+    attributes:
+      label: Tool
+      description: The Wingman tool name, for example edit_graph, edit_bp, execute_python.
+      placeholder: edit_graph
+    validations:
+      required: true
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where did this happen?
+      options:
+        - Wingman panel inside Unreal
+        - Outside AI app over MCP (Claude Code)
+        - Outside AI app over MCP (Codex)
+        - Outside AI app over MCP (Cursor)
+        - Outside AI app over MCP (other)
+    validations:
+      required: true
+  - type: input
+    id: wingman_version
+    attributes:
+      label: Wingman version
+      description: Shown on the Updates page in the Wingman panel.
+      placeholder: 0.22.6
+    validations:
+      required: true
+  - type: dropdown
+    id: ue_version
+    attributes:
+      label: Unreal Engine version
+      options: ["4.27", "5.5", "5.6", "5.7", "5.8", "5.9", "Other"]
+    validations:
+      required: true
+  - type: textarea
+    id: call
+    attributes:
+      label: The call
+      description: The arguments sent to the tool, with personal details taken out.
+      render: json
+  - type: textarea
+    id: result
+    attributes:
+      label: What happened
+      description: The exact error or reply text.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround you used (if any)
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy
+      options:
+        - label: I took out names, emails, keys and personal paths, and attached no project files.
+          required: true
