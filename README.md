@@ -43,6 +43,7 @@ We never ask for any of these here.
 
 ## What happens next
 
-We read every report. When we accept one, we add the `accepted` label and track the work on our side. When a fix
-ships, we close the issue with the version that has it. Fixes and new tools are listed on the Updates page in the
-Wingman panel.
+We read every report. When we accept one, we add the `accepted` label and track the work on our side. When the fix
+ships, we close the report with the version that has it and replace its details with a short note, so the page
+stays as a record that it was fixed. Fixes and new tools are listed on the Updates page in the Wingman panel, and
+fixed entries come off [KNOWN-ISSUES.md](KNOWN-ISSUES.md).
